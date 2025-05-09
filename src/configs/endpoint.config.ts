@@ -4,7 +4,7 @@ const endpointConfig = {
     signIn: '/user/login',
     signOut: '/user/logout',
     signUp: '/user/register',
-    forgotPassword: '/user/forgot-password',
+    forgotPassword: '/user/request-reset-password',
     resetPassword: '/user/reset-password',
 }
 
