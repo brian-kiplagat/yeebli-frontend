@@ -70,15 +70,22 @@ function AuthProvider({ children }: AuthProviderProps) {
 
     const handleSignOut = () => {
         setToken('')
-        setUser({})
+        setUser({
+            id: 0,
+            email: '',
+            name: '',
+            createdAt: '',
+            is_verified: false,
+            role: '',
+        })
         setSessionSignedIn(false)
     }
 
     const signIn = async (values: SignInCredential): AuthResult => {
         try {
             const resp = await apiSignIn(values)
-            if (resp) {
-                handleSignIn({ accessToken: resp.token }, resp.user)
+            if (resp?.data) {
+                handleSignIn({ accessToken: resp.data.token }, resp.data.user)
                 redirect()
                 return {
                     status: 'success',
@@ -89,11 +96,11 @@ function AuthProvider({ children }: AuthProviderProps) {
                 status: 'failed',
                 message: 'Unable to sign in',
             }
-            // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-        } catch (errors: any) {
+        } catch (error: unknown) {
+            const err = error as { response?: { data?: { message?: string } } }
             return {
                 status: 'failed',
-                message: errors?.response?.data?.message || errors.toString(),
+                message: err?.response?.data?.message || String(error),
             }
         }
     }
@@ -101,8 +108,8 @@ function AuthProvider({ children }: AuthProviderProps) {
     const signUp = async (values: SignUpCredential): AuthResult => {
         try {
             const resp = await apiSignUp(values)
-            if (resp) {
-                handleSignIn({ accessToken: resp.token }, resp.user)
+            if (resp?.data) {
+                handleSignIn({ accessToken: resp.data.token }, resp.data.user)
                 redirect()
                 return {
                     status: 'success',
@@ -113,11 +120,11 @@ function AuthProvider({ children }: AuthProviderProps) {
                 status: 'failed',
                 message: 'Unable to sign up',
             }
-            // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-        } catch (errors: any) {
+        } catch (error: unknown) {
+            const err = error as { response?: { data?: { message?: string } } }
             return {
                 status: 'failed',
-                message: errors?.response?.data?.message || errors.toString(),
+                message: err?.response?.data?.message || String(error),
             }
         }
     }

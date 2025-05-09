@@ -10,11 +10,13 @@ interface ViewsProps {
 }
 
 const Views = (props: ViewsProps) => {
-
     const location = useLocation()
 
     return (
-        <Suspense key={location.key} fallback={<Loading loading={true} className="w-full" />}>
+        <Suspense
+            key={location.key}
+            fallback={<Loading loading={true} className="w-full" />}
+        >
             <AllRoutes {...props} />
         </Suspense>
     )
