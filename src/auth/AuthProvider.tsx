@@ -97,10 +97,16 @@ function AuthProvider({ children }: AuthProviderProps) {
                 message: 'Unable to sign in',
             }
         } catch (error: unknown) {
-            const err = error as { response?: { data?: { message?: string } } }
+            const err = error as {
+                response?: { data?: { error?: string; message?: string } }
+            }
+
             return {
                 status: 'failed',
-                message: err?.response?.data?.message || String(error),
+                message:
+                    err?.response?.data?.error ||
+                    err?.response?.data?.message ||
+                    String(error),
             }
         }
     }
@@ -121,10 +127,16 @@ function AuthProvider({ children }: AuthProviderProps) {
                 message: 'Unable to sign up',
             }
         } catch (error: unknown) {
-            const err = error as { response?: { data?: { message?: string } } }
+            const err = error as {
+                response?: { data?: { error?: string; message?: string } }
+            }
+
             return {
                 status: 'failed',
-                message: err?.response?.data?.message || String(error),
+                message:
+                    err?.response?.data?.error ||
+                    err?.response?.data?.message ||
+                    String(error),
             }
         }
     }

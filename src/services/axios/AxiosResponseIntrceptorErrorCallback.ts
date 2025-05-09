@@ -9,7 +9,14 @@ const AxiosResponseIntrceptorErrorCallback = (error: AxiosError) => {
 
     if (response && unauthorizedCode.includes(response.status)) {
         setToken('')
-        useSessionUser.getState().setUser({})
+        useSessionUser.getState().setUser({
+            id: 0,
+            email: '',
+            name: '',
+            createdAt: '',
+            is_verified: false,
+            role: '',
+        })
         useSessionUser.getState().setSessionSignedIn(false)
     }
 }

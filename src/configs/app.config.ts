@@ -1,5 +1,6 @@
 export type AppConfig = {
     apiPrefix: string
+    apiBaseUrl: string
     authenticatedEntryPath: string
     unAuthenticatedEntryPath: string
     locale: string
@@ -10,6 +11,7 @@ export type AppConfig = {
 
 const appConfig: AppConfig = {
     apiPrefix: '/api',
+    apiBaseUrl: 'https://api.3themind.com/v1',
     authenticatedEntryPath: '/dashboards/ecommerce',
     unAuthenticatedEntryPath: '/sign-in',
     locale: 'en',

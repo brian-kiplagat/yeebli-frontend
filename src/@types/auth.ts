@@ -7,7 +7,7 @@ export type SignUpCredential = {
     name: string
     email: string
     password: string
-    phoneNumber: string
+    phone: string
 }
 
 export type ForgotPassword = {

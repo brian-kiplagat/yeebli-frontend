@@ -18,7 +18,7 @@ type SignUpFormSchema = {
     name: string
     password: string
     email: string
-    phoneNumber: string
+    phone: string
 }
 
 const validationSchema: ZodType<SignUpFormSchema> = z.object({
@@ -32,7 +32,7 @@ const validationSchema: ZodType<SignUpFormSchema> = z.object({
         .string({ required_error: 'Password Required' })
         .min(6, 'Password must be at least 6 characters'),
 
-    phoneNumber: z
+    phone: z
         .string({ required_error: 'Please enter your phone number' })
         .min(10, 'Phone number must be at least 10 digits')
         .regex(/^\+?[0-9]+$/, 'Please enter a valid phone number'),
@@ -55,15 +55,15 @@ const SignUpForm = (props: SignUpFormProps) => {
             name: '',
             email: '',
             password: '',
-            phoneNumber: '',
+            phone: '',
         },
     })
 
     const onSignUp = async (values: SignUpFormSchema) => {
-        const { name, password, email, phoneNumber } = values
+        const { name, password, email, phone } = values
         if (!disableSubmit) {
             setSubmitting(true)
-            const result = await signUp({ name, password, email, phoneNumber })
+            const result = await signUp({ name, password, email, phone })
 
             if (result?.status === 'failed') {
                 setMessage?.(result.message)
@@ -114,11 +114,11 @@ const SignUpForm = (props: SignUpFormProps) => {
                 </FormItem>
                 <FormItem
                     label="Phone Number"
-                    invalid={Boolean(errors.phoneNumber)}
-                    errorMessage={errors.phoneNumber?.message}
+                    invalid={Boolean(errors.phone)}
+                    errorMessage={errors.phone?.message}
                 >
                     <Controller
-                        name="phoneNumber"
+                        name="phone"
                         control={control}
                         render={({ field }) => (
                             <Input
