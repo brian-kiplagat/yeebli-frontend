@@ -2,7 +2,7 @@ import { useRef, useImperativeHandle, useState } from 'react'
 import AuthContext from './AuthContext'
 import appConfig from '@/configs/app.config'
 import { useSessionUser, useToken } from '@/store/authStore'
-import { apiSignIn, apiSignOut, apiSignUp } from '@/services/AuthService'
+import { apiSignIn, apiSignOut, apiSignUp, apiSaveBusinessDetails } from '@/services/AuthService'
 import { REDIRECT_URL_KEY } from '@/constants/app.constant'
 import { useNavigate } from 'react-router'
 import type {
@@ -12,6 +12,7 @@ import type {
     OauthSignInCallbackPayload,
     User,
     Token,
+    BusinessDetails,
 } from '@/@types/auth'
 import type { ReactNode, Ref } from 'react'
 import type { NavigateFunction } from 'react-router'
@@ -77,6 +78,7 @@ function AuthProvider({ children }: AuthProviderProps) {
             createdAt: '',
             is_verified: false,
             role: '',
+            authority: [],
         })
         setSessionSignedIn(false)
     }
@@ -141,6 +143,36 @@ function AuthProvider({ children }: AuthProviderProps) {
         }
     }
 
+    const saveBusinessDetails = async (values: BusinessDetails): AuthResult => {
+        try {
+            const resp = await apiSaveBusinessDetails(values)
+            if (resp?.data) {
+                handleSignIn({ accessToken: resp.data.token }, resp.data.user)
+                redirect()
+                return {
+                    status: 'success',
+                    message: '',
+                }
+            }
+            return {
+                status: 'failed',
+                message: 'Unable to sign up',
+            }
+        } catch (error: unknown) {
+            const err = error as {
+                response?: { data?: { error?: string; message?: string } }
+            }
+
+            return {
+                status: 'failed',
+                message:
+                    err?.response?.data?.error ||
+                    err?.response?.data?.message ||
+                    String(error),
+            }
+        }
+    }
+
     const signOut = async () => {
         try {
             await apiSignOut()
@@ -165,6 +197,7 @@ function AuthProvider({ children }: AuthProviderProps) {
                 user,
                 signIn,
                 signUp,
+                saveBusinessDetails,
                 signOut,
                 oAuthSignIn,
             }}

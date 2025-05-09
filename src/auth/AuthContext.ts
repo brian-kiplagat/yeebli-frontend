@@ -5,6 +5,7 @@ import type {
     AuthResult,
     User,
     OauthSignInCallbackPayload,
+    BusinessDetails,
 } from '@/@types/auth'
 
 type Auth = {
@@ -12,6 +13,7 @@ type Auth = {
     user: User
     signIn: (values: SignInCredential) => AuthResult
     signUp: (values: SignUpCredential) => AuthResult
+    saveBusinessDetails: (values: BusinessDetails) => AuthResult
     signOut: () => void
     oAuthSignIn: (
         callback: (payload: OauthSignInCallbackPayload) => void,
@@ -37,9 +39,18 @@ const defaultOAuthSignInPlaceHolder = (
 
 const AuthContext = createContext<Auth>({
     authenticated: false,
-    user: {},
+    user: {
+        id: 0,
+        email: '',
+        name: '',
+        createdAt: '',
+        is_verified: false,
+        role: '',
+        authority: [],
+    },
     signIn: async () => defaultFunctionPlaceHolder(),
     signUp: async () => defaultFunctionPlaceHolder(),
+    saveBusinessDetails: async () => defaultFunctionPlaceHolder(),
     signOut: () => {},
     oAuthSignIn: defaultOAuthSignInPlaceHolder,
 })

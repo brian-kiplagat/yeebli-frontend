@@ -25,6 +25,7 @@ export type User = {
     createdAt: string
     is_verified: boolean
     role: string
+    authority: string[]
 }
 
 export type Token = {
@@ -45,12 +46,56 @@ export type SignUpResponse = {
     }
 }
 
+export type BusinessDetails = {
+    name: string
+    email: string
+    phone: string
+    address: string
+    logo: string
+    logoFileName: string
+}
 export type AuthResponse = {
     status: 'success' | 'failed'
     message: string
 }
 
+export type BusinessDetailsResponse = {
+    message: string
+    business: {
+        id: number
+        name: string
+        address: string
+        phone: string
+        email: string
+        description: string
+        logo_asset_id: number
+        user_id: number
+        updated_at: string
+        created_at: string
+        logo: string
+        teamDetails: {
+            id: number
+            team_id: number
+            user_id: number
+            role: string
+            created_at: string
+            updated_at: string
+            team: {
+                id: number
+                name: string
+                created_at: string
+                updated_at: string
+            }
+            user: {
+                email: string
+                name: string
+            }
+        }
+    }
+}
+
 export type AuthResult = Promise<AuthResponse>
+export type BusinessDetailsResult = Promise<BusinessDetailsResponse>
 
 export type OauthSignInCallbackPayload = {
     onSignIn: (token: Token, user?: User) => void
